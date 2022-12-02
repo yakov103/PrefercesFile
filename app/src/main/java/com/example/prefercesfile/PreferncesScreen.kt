@@ -22,23 +22,24 @@ import java.util.prefs.Preferences
 @Composable
 fun PreferenceScreen() {
     var gender = listOf<String>("Male" , "Female" , "Prefers not to say", "Other")
-    var selectedGender by remember { mutableStateOf("") }
+    var selectedGender by remember { mutableStateOf("this is the first ") }
     var age = listOf<String>("18-25", "26-32", "33-40", "41-50", "51-60", "61-70", "71-80", "More then 81")
-    var selectedAge by remember { mutableStateOf("") }
+    var selectedAge by remember { mutableStateOf(" this is the second ") }
 
     Column(modifier = Modifier.fillMaxWidth()) {
-        dropDownMenu(list = gender, labeli = "Select gender")
-        dropDownMenu(list = age, labeli = "Select age")
+        dropDownMenu(list = gender, labeli = "Select gender", onSelected = { selectedGender = it })
+        dropDownMenu(list = age, labeli = "Select age" , onSelected = { selectedAge = it })
+        Text(text = selectedGender)
+        Text(text = selectedAge)
+
     }
 
-    Text(text = selectedGender)
-    Text(text = selectedAge)
 
 
 }
 
 @Composable
-fun dropDownMenu(list : List<String>  , labeli : String) {
+fun dropDownMenu(list : List<String>  , labeli : String ,onSelected : (String) -> Unit = {}){
 
     var expended by remember {
         mutableStateOf(false)
@@ -46,9 +47,10 @@ fun dropDownMenu(list : List<String>  , labeli : String) {
     var selected by remember {
         mutableStateOf("")
     }
+
     var textFiledSize by remember {
         mutableStateOf(Size.Zero)
-    }
+    } // this is the size of the text field
 
     val icon = if (expended) {
         Icons.Filled.KeyboardArrowUp
@@ -60,7 +62,7 @@ fun dropDownMenu(list : List<String>  , labeli : String) {
         OutlinedTextField(
             value = selected,
             onValueChange = {
-                selected = it
+                onSelected (it)
             },
             modifier = Modifier
                 .fillMaxWidth()
@@ -81,6 +83,7 @@ fun dropDownMenu(list : List<String>  , labeli : String) {
             list.forEach { label ->
                 DropdownMenuItem(onClick = {
                     selected = label
+                    onSelected(label)
                     expended = false
                 }) {
                     Text(text = label)
