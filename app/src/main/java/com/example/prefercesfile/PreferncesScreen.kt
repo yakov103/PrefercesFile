@@ -32,6 +32,13 @@ fun PreferenceScreen() {
         Text(text = selectedGender)
         Text(text = selectedAge)
 
+
+        // blue submit button with round edges on the center
+        Button(onClick = { /*TODO*/ }, modifier = Modifier.padding(16.dp).fillMaxWidth()) {
+            Text(text = "Submit")
+        }
+
+
     }
 
 
